@@ -19,6 +19,10 @@ cluster.vm.define "ansible-node" do |config|
     vb.customize ["modifyvm", :id, "--memory", "128"]
     vb.customize ["modifyvm", :id, "--cpus", "1"]
   end
+  config.vm.provider :libvirt do |domain|
+    domain.memory = 128
+    domain.cpus = 1
+  end
   config.vm.hostname = "ansible-node"
   config.vm.network :private_network, ip: "10.42.0.2"
 end
@@ -31,6 +35,10 @@ cluster.vm.define "node-1" do |config|
     vb.customize ["modifyvm", :id, "--memory", "256"]
     vb.customize ["modifyvm", :id, "--cpus", "1"]
   end
+  config.vm.provider :libvirt do |domain|
+    domain.memory = 256
+    domain.cpus = 1
+  end
   config.vm.hostname = "node-1"
   config.vm.network :private_network, ip: "10.42.0.6"
 end
@@ -41,6 +49,10 @@ cluster.vm.define "node-2" do |config|
   config.vm.provider :virtualbox do |vb, override|
     vb.customize ["modifyvm", :id, "--memory", "256"]
     vb.customize ["modifyvm", :id, "--cpus", "1"]
+  end
+  config.vm.provider :libvirt do |domain|
+    domain.memory = 256
+    domain.cpus = 1
   end
   config.vm.hostname = "node-2"
   config.vm.network :private_network, ip: "10.42.0.7"
@@ -54,6 +66,10 @@ cluster.vm.define "node-3" do |config|
     vb.customize ["modifyvm", :id, "--memory", "256"]
     vb.customize ["modifyvm", :id, "--cpus", "1"]
   end
+  config.vm.provider :libvirt do |domain|
+    domain.memory = 256
+    domain.cpus = 1
+  end
   config.vm.hostname = "node-3"
   config.vm.network :private_network, ip: "10.42.0.8"
 end
@@ -64,6 +80,10 @@ cluster.vm.define "node-4" do |config|
   config.vm.provider :virtualbox do |vb, override|
     vb.customize ["modifyvm", :id, "--memory", "256"]
     vb.customize ["modifyvm", :id, "--cpus", "1"]
+  end
+  config.vm.provider :libvirt do |domain|
+    domain.memory = 256
+    domain.cpus = 1
   end
   config.vm.hostname = "node-4"
   config.vm.network :private_network, ip: "10.42.0.100"
@@ -76,6 +96,10 @@ cluster.vm.define "tower" do |config|
   config.vm.provider :virtualbox do |vb, override|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
     vb.customize ["modifyvm", :id, "--cpus", "1"]
+  end
+  config.vm.provider :libvirt do |domain|
+    domain.memory = 2048
+    domain.cpus = 1
   end
   config.vm.hostname = "tower"
 end

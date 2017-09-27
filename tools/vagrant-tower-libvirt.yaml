@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  name: Convert Ansible Tower Vagrant file from virtualbox to libvirt format
+  become: yes
+  vars:
+    mutate_packages:
+      - qemu-img 
+      - libvirt-devel
+      - rubygem-ruby-libvirt 
+      - ruby-devel 
+      - redhat-rpm-config
+    mutate_github: https://github.com/sciurus/vagrant-mutate
+    tower_box_url: https://vagrantcloud.com/ansible/boxes/tower/versions/3.1.5/providers/virtualbox.box
+    tower_virtualbox_folder: "{{ ansible_env.HOME }}/.vagrant.d/boxes/virtualbox"
+    tower_libvirt_folder: "{{ ansible_env.HOME }}/.vagrant.d/boxes/ansible-VAGRANTSLASH-tower"
+
+#WARNING on DNF systems, the "yum" ansible module requires "dnf install yum python2-dnf"
+  tasks:
+    - name: mutate pre-required packages are present
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ mutate_packages }}"
+
+    - name: install vagrant mutate plugin
+      shell: vagrant plugin install vagrant-mutate
+
+    - name: mutate the latest Ansible Tower Virtualbox to Libvirt
+      shell: vagrant mutate "{{tower_box_url}}" libvirt
+
+    - name: rename the mutated box to ansible/tower
+      file:
+        src: "{{ tower_virtualbox_folder}}"
+        dest: "{{ tower_libvirt_folder}}"
+        state: directory
+
+    - name: validate vagrant now has a ansible/tower
+      shell: vagrant box list | grep tower
